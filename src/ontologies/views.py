@@ -22,6 +22,7 @@ from dictionary.manager import Dictionary_Manager
 from entity_import.entity_import_list import Entity_Importer_List
 
 import os.path
+import os.getenv
 import tempfile
 
 from urllib.request import urlretrieve
@@ -469,13 +470,13 @@ def	write_named_entities_config():
 			ontology_tagger.parse(filename)
 			
 			# add the labels to entities index for normalization and entity linking
-			ontology_tagger.solr_entities = 'http://localhost:8983/solr/'
-			ontology_tagger.solr_core_entities = 'opensemanticsearch-entities'
+			ontology_tagger.solr_entities = os.getenv('ONTO_TAGGER_SOLR_ENTITIES_URL', default='http://localhost:8983/solr/')
+			ontology_tagger.solr_core_entities = os.getenv('ONTO_TAGGER_SOLR_CORE_ENTITIES', default='opensemanticsearch-entities')
 			
 			# append synonyms to Solr managed synonyms resource "skos"
-			ontology_tagger.solr = 'http://localhost:8983/solr/'
-			ontology_tagger.solr_core = 'opensemanticsearch'
-			ontology_tagger.synonyms_resourceid = 'skos'
+			ontology_tagger.solr = os.getenv('ONTO_TAGGER_SOLR_URL', default='http://localhost:8983/solr/')
+			ontology_tagger.solr_core = os.getenv('ONTO_TAGGER_SOLR_CORE', default='opensemanticsearch')
+			ontology_tagger.synonyms_resourceid = os.getenv('ONTO_TAGGER_SYN_RESOURCEID', default='skos')
 
 			# append single words of concept labels to wordlist for OCR word dictionary
 			ontology_tagger.wordlist_configfile = tmp_wordlist_configfilename
@@ -533,5 +534,10 @@ def	write_named_entities_config():
 	# Reload/restart Solr core / schema / config to apply changed configs
 	# so added config files / ontolgies / facets / new dictionary entries will be considered by analyzing/indexing new documents
 	# Todo: Use the Solr URI from config
-	urlopen('http://localhost:8983/solr/admin/cores?action=RELOAD&core=opensemanticsearch')
-	urlopen('http://localhost:8983/solr/admin/cores?action=RELOAD&core=opensemanticsearch-entities')
+	solr = os.getenv('ONTO_TAGGER_SOLR_URL', default='http://localhost:8983/solr/')
+	solr_core = os.getenv('ONTO_TAGGER_SOLR_CORE', default='opensemanticsearch')
+	urlopen(solr + 'admin/cores?action=RELOAD&core=' + solr_core)
+	
+	solr_entities = os.getenv('ONTO_TAGGER_SOLR_ENTITIES_URL', default='http://localhost:8983/solr/')
+	solr_core_entities = os.getenv('ONTO_TAGGER_SOLR_CORE_ENTITIES', default='opensemanticsearch-entities')
+	urlopen(solr_entities + 'admin/cores?action=RELOAD&core=' + solr_core_entities)

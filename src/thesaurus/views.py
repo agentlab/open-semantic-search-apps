@@ -478,6 +478,6 @@ def export_entity(concept, wordlist_configfilename = "/etc/opensemanticsearch/oc
 	
 	if commit:
 		# reload changed dictionary matcher dictionaries in schema of entities index
-		urlopen('http://localhost:8983/solr/admin/cores?action=RELOAD&core=opensemanticsearch-entities')
+		urlopen(os.getenv('ONTO_TAGGER_SOLR_ENTITIES_URL', default='http://localhost:8983/solr/') + 'admin/cores?action=RELOAD&core=' + os.getenv('ONTO_TAGGER_SOLR_CORE_ENTITIES', default='opensemanticsearch-entities'))
 
 	return appended_words

@@ -20,21 +20,21 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='setup',
             name='graph_neo4j_browser',
-            field=models.CharField(blank=True, default='http://localhost:7474/browser/', max_length=1000),
+            field=models.CharField(blank=True, default=os.getenv('NEO4J_BROWSER_URL', default='http://localhost:7474/browser/'), max_length=1000),
         ),
         migrations.AddField(
             model_name='setup',
             name='graph_neo4j_host',
-            field=models.CharField(blank=True, default='localhost', max_length=1000),
+            field=models.CharField(blank=True, default=os.getenv('NEO4J_HOST', default='localhost'), max_length=1000),
         ),
         migrations.AddField(
             model_name='setup',
             name='graph_neo4j_password',
-            field=models.CharField(blank=True, default='neo4j', max_length=1000),
+            field=models.CharField(blank=True, default=os.getenv('NEO4J_PASSWORD', default='neo4j'), max_length=1000),
         ),
         migrations.AddField(
             model_name='setup',
             name='graph_neo4j_user',
-            field=models.CharField(blank=True, default='neo4j', max_length=1000),
+            field=models.CharField(blank=True, default=os.getenv('NEO4J_USER', default='neo4j'), max_length=1000),
         ),
     ]

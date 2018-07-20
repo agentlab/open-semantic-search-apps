@@ -168,7 +168,9 @@ def search(query, filterquery=None, operator='AND'):
 #	} )
 
 	# todo: read Solr URI from config
-	uri = 'http://localhost:8983/solr/core1/select?q.op=' + operator + '&wt=json&deftype=edismax&fl=id,score&hl=true&hl.fl=*'
+	solr_core = os.getenv('SOLR_CORE', default='core1')
+	url = os.getenv('SOLR_URL', default='http://localhost:8983/solr/')
+	uri += solr_core + '/select?q.op=' + operator + '&wt=json&deftype=edismax&fl=id,score&hl=true&hl.fl=*'
 	uri += '&q=' + urllib.parse.quote( query )
 
 	if filterquery:
