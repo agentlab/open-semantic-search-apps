@@ -11,6 +11,7 @@ from django.http import HttpResponseRedirect
 from django.contrib import messages
 from django.shortcuts import redirect
 import django.core.urlresolvers
+import os
 import os.path
 from urllib.request import urlopen
 import solr_ontology_tagger
