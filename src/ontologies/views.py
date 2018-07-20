@@ -1,3 +1,5 @@
+import os
+
 from django.shortcuts import render
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse
@@ -21,7 +23,6 @@ from solr_ontology_tagger import OntologyTagger
 from dictionary.manager import Dictionary_Manager
 from entity_import.entity_import_list import Entity_Importer_List
 
-import os
 import os.path
 import tempfile
 
